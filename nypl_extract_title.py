@@ -2,10 +2,8 @@
 
 import os
 import re
-import requests
 
 pat = '<h1 class="title" id="page-title">(.*)</h1>'
-titles = []
 
 meta = '''<dc:title>%s</dc:title>\n\
 <dc:language>en-US</dc:language>\n\
@@ -16,17 +14,18 @@ meta = '''<dc:title>%s</dc:title>\n\
 
 
 for f in os.listdir('html/'): 
+	
 	with open('html/'+f, 'r') as p:
+		
 		try: 
 			p = p.readlines()[0]
 			title = re.findall(pat, p)[0]
-			titles.append(title)
 			newdir = '/home/MZ/Desktop/judiciary_ebooks/titles/'+f.strip('.html')
 			os.makedirs(newdir)
 
-
-			with open(newdir + '/' + 'metadata.xml', 'w') as o:
+			with open(newdir + '/metadata.xml', 'w') as o:
 				o.write(meta % str(title))
+
 		except: 
 			pass
 

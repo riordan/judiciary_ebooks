@@ -13,7 +13,7 @@ Created at NYPL/Readium Open Book Hack Day
 
 # Download and Read
 - Click `epub` folder
-- Click on any folder
+- Click on any file
 - Click `View Raw` to download as `.epub`
 - Open in an e-book reader like Readium (http://readium.org/)
 

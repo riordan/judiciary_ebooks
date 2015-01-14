@@ -13,7 +13,7 @@ def scrape(url)
 #{title}
 #{casecontent}
   eos
-  result
+  {:content => result, :title => title.content}
 end
 
 def get_docket(url)
@@ -27,10 +27,11 @@ namespace :ebook do
     Nokogiri::HTML(open(idx)).css("ul li a").each do |c|
       if c[:href].include?("/supremecourt/text")
         begin
+          scraped = scrape("http://www.law.cornell.edu" + c[:href])
           `mkdir html/#{get_docket(c[:href])}`
-          File.open("html/#{get_docket(c[:href])}/#{get_docket(c[:href])}.html", "w:UTF-8") {|f| f.write(scrape("http://www.law.cornell.edu" + c[:href])) }
+          File.open("html/#{get_docket(c[:href])}/#{get_docket(c[:href])}.html", "w:UTF-8") {|f| f.write(scraped[:content]) }
           `cp metadata_template.xml html/#{get_docket(c[:href])}/metadata.xml`
-          `echo "<dc:title>#{get_docket(c[:href])}</dc:title>" >> html/#{get_docket(c[:href])}/metadata.xml`
+          `echo "<dc:title>#{scraped[:title]}</dc:title>" >> html/#{get_docket(c[:href])}/metadata.xml`
           `echo '% #{get_docket(c[:href])} \n% Supreme Court of the United States' > html/#{get_docket(c[:href])}/title.txt`
           `pandoc -o epub/#{get_docket(c[:href])}.epub html/#{get_docket(c[:href])}/title.txt html/#{get_docket(c[:href])}/#{get_docket(c[:href])}.html --epub-metadata=html/#{get_docket(c[:href])}/metadata.xml --epub-stylesheet=stylesheet.css`
         rescue

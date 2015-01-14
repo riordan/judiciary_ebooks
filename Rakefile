@@ -24,7 +24,7 @@ end
 
 namespace :ebook do
   task :scrape do
-    Nokogiri::HTML(open(idx)).css("ul li a").first(10).each do |c|
+    Nokogiri::HTML(open(idx)).css("ul li a").each do |c|
       if c[:href].include?("/supremecourt/text")
         begin
           `mkdir html/#{get_docket(c[:href])}`

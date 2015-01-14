@@ -25,7 +25,10 @@ end
 Nokogiri::HTML(open(idx)).css("ul li a").each do |c|
   if c[:href].include?("/supremecourt/text")
     begin
-      File.open("../html/#{get_docket(c[:href])}.html", "w:UTF-8") {|f| f.write(scrape("http://www.law.cornell.edu" + c[:href])) }
+      `mkdir ../html/#{get_docket(c[:href])}`
+      File.open("../html/#{get_docket(c[:href])}/#{get_docket(c[:href])}.html", "w:UTF-8") {|f| f.write(scrape("http://www.law.cornell.edu" + c[:href])) }
+      #title.txt
+      #
     rescue
       puts "Unable to do docket #{get_docket(c[:href])}!"
     end

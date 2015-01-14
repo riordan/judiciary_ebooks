@@ -27,3 +27,6 @@ Created at NYPL/Readium Open Book Hack Day
 
 # Source
 - Cornell Law School Legal Information Institute (LII): http://www.law.cornell.edu/supremecourt/text/home
+
+# Follow
+- https://twitter.com/scotus_ebooks

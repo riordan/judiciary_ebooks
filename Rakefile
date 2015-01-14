@@ -24,7 +24,7 @@ end
 
 namespace :ebook do
   task :scrape do
-    Nokogiri::HTML(open(idx)).css("ul li a").each do |c|
+    Nokogiri::HTML(open(idx)).css("ul li a").first(10).each do |c|
       if c[:href].include?("/supremecourt/text")
         begin
           `mkdir html/#{get_docket(c[:href])}`
@@ -32,7 +32,7 @@ namespace :ebook do
           `cp metadata_template.xml html/#{get_docket(c[:href])}/metadata.xml`
           `echo "<dc:title>#{get_docket(c[:href])}</dc:title>" >> html/#{get_docket(c[:href])}/metadata.xml`
           `echo '% #{get_docket(c[:href])} \n% Supreme Court of the United States' > html/#{get_docket(c[:href])}/title.txt`
-          `pandoc -o epub/#{get_docket(c[:href])}.epub html/#{get_docket(c[:href])}/title.txt html/#{get_docket(c[:href])}/#{get_docket(c[:href])}.html --epub-metadata=html/#{get_docket(c[:href])}/metadata.xml --epub-stylesheet=stylesheet.css`
+          `pandoc -o epub/#{get_docket(c[:href])}.epub html/#{get_docket(c[:href])}/title.txt html/#{get_docket(c[:href])}/#{get_docket(c[:href])}.html --epub-metadata=html/#{get_docket(c[:href])}/metadata.xml --epub-stylesheet=stylesheet.css --epub-cover-image=cover.jpg`
         rescue
           puts "Unable to do docket #{get_docket(c[:href])}!"
         end

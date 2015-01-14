@@ -13,7 +13,7 @@ def scrape(url)
 #{title}
 #{casecontent}
   eos
-  {:content => result, :title => title.content}
+  {:content => result, :title => title.content, :empty => casecontent.content.gsub(/\s+/, "").length == 0}
 end
 
 def get_docket(url)
@@ -28,6 +28,7 @@ namespace :ebook do
       if c[:href].include?("/supremecourt/text")
         begin
           scraped = scrape("http://www.law.cornell.edu" + c[:href])
+          throw "No content" if scraped[:empty]
           `mkdir html/#{get_docket(c[:href])}`
           File.open("html/#{get_docket(c[:href])}/#{get_docket(c[:href])}.html", "w:UTF-8") {|f| f.write(scraped[:content]) }
           `cp metadata_template.xml html/#{get_docket(c[:href])}/metadata.xml`
